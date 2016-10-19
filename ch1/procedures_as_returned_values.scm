@@ -17,7 +17,7 @@
                     ((derivative f) x)))))
 
 (define (netwons-method f guess)
-  (fixed-point (neutron-transform f) guess))
+  (fixed-point (newton-transform f) guess))
 
 (define (cubic a b c)
   (lambda (x) (+ (* x x x)

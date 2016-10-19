@@ -39,3 +39,7 @@
         (else (compose f (repeated f (- n 1))))))
 
 ((repeated (lambda (x) (+ 1 x)) 6) 5)
+
+(define (n-smoothen f n)
+  (lambda (x)
+    ((repeated (smoothen f) n) x)))

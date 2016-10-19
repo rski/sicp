@@ -43,3 +43,7 @@
 (define (n-smoothen f n)
   (lambda (x)
     ((repeated (smoothen f) n) x)))
+
+(define (iterative-improve good-enough? improve)
+  (lambda (guess) (if (good-enough? guess) guess
+                      ((iterative-improve good-enough? improve) (improve guess)))))

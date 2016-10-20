@@ -1,15 +1,9 @@
 (define dx 0.001)
-(define (smoothen f)
-  (lambda (x) (/ (+ (f (- x dx))
-                    (f x)
-                    (f (+ x dx)))
-                 3)))
 
 (define (derivative f)
   (lambda (x) (/ (- (f (+ x dx)) (f x))
                  dx
                  )))
-
 
 (define (newton-transform f)
   (lambda (x) (- x
@@ -40,10 +34,27 @@
 
 ((repeated (lambda (x) (+ 1 x)) 6) 5)
 
+;; smoothen
+(define (smoothen f)
+  (lambda (x) (/ (+ (f (- x dx))
+                    (f x)
+                    (f (+ x dx)))
+                 3)))
+
 (define (n-smoothen f n)
   (lambda (x)
     ((repeated (smoothen f) n) x)))
 
+;; iterative-improve
 (define (iterative-improve good-enough? improve)
   (lambda (guess) (if (good-enough? guess) guess
                       ((iterative-improve good-enough? improve) (improve guess)))))
+
+(define (inc-improve x)
+  (define (good-enough? x)
+    (= x 15))
+  (define (improve x)
+    (+ 1 x))
+  ((iterative-improve good-enough? improve) x))
+
+(display (inc-improve 0))

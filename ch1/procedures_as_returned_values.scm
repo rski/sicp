@@ -1,4 +1,4 @@
-(define dx 0.001)
+(define dx 0.0001)
 
 (define (derivative f)
   (lambda (x) (/ (- (f (+ x dx)) (f x))
@@ -58,3 +58,18 @@
   ((iterative-improve good-enough? improve) x))
 
 (display (inc-improve 0))
+
+(define (fixed-point f guess)
+  (define (good-enough? guess)
+    (< (abs (- (improve guess) guess)) dx))
+  (define (improve x)
+    (f x))
+  ((iterative-improve good-enough? improve) guess))
+
+(define (sqrt x)
+  (fixed-point (lambda (y) (/ (+ (/ x y) y) 2)) 10.0))
+
+(display "\n--sqrt with f-point--\n")
+(display (sqrt 9))
+(display "\n")
+(display (sqrt 100))

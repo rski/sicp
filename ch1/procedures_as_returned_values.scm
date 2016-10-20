@@ -47,8 +47,9 @@
 
 ;; iterative-improve
 (define (iterative-improve good-enough? improve)
-  (lambda (guess) (if (good-enough? guess) guess
-                      ((iterative-improve good-enough? improve) (improve guess)))))
+  (lambda (guess)
+    (if (good-enough? guess) guess
+        ((iterative-improve good-enough? improve) (improve guess)))))
 
 (define (inc-improve x)
   (define (good-enough? x)
@@ -73,3 +74,20 @@
 (display (sqrt 9))
 (display "\n")
 (display (sqrt 100))
+
+(define (average x y)
+  (/ (+ x y)
+     2))
+
+(define (avg-damp f)
+  (lambda (x) (average x (f x))))
+
+(define (log2 x)
+  (/ (log x) (log 2)))
+
+(define (nroot x n)
+  (define (f y)
+    (/ x (expt y (- n 1))))
+  (fixed-point ((repeated avg-damp (floor (log2 n))) f) 1.0))
+
+(display (nroot 10000 16))
